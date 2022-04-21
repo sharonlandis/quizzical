@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import OneQuiz from "./OneQuiz";
 import ShowAnswers from "./ShowAnswers";
-import blob from "../images/blob.png";
+import blobYellow from "../images/blobYellow.png";
+import blobBlue from "../images/blobBlue.png";
 
 export default function QuizPage() {
-  const [quizArr, setQuizArr] = React.useState([]);
-  const [tries, setTries] = React.useState(0);
-  const [correctCount, setCorrectCount] = React.useState(0);
-  const [done, setDone] = React.useState(false);
-  const [rendered, setRendered] = React.useState(false);
+  const [quizArr, setQuizArr] = useState([]);
+  const [tries, setTries] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [done, setDone] = useState(false);
+  const [rendered, setRendered] = useState(false);
 
   React.useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=5")
@@ -79,13 +80,15 @@ export default function QuizPage() {
   function handlePlayAgain() {
     setQuizArr([]);
     setDone(false);
-    if (tries) setTries((prev) => prev + 1);
+    if (!isNaN(tries)) {
+      setTries((prev) => prev + 1);
+    }
     setRendered(false);
   }
 
   return (
     <div className="quiz--page-container">
-      <img src={blob} alt="yellow blob" className="blob--yellow" />
+      <img src={blobYellow} alt="yellow blob" className="blob--yellow" />
       {quizArr.map((quiz) => (
         <OneQuiz
           key={quiz.question}
@@ -106,6 +109,7 @@ export default function QuizPage() {
           Check answers
         </button>
       )}
+      <img src={blobBlue} alt="blue blob" className="blob--blue" />
     </div>
   );
 }
